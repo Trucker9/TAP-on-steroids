@@ -45,19 +45,31 @@ class LanguageModel():
 # ---------------------------------------------------------------------------
 
 # Browse the full catalogue at https://openrouter.ai/models
+# NOTE: ids are "provider/model" (no leading "openrouter/"). OpenRouter retires
+# models over time, so verify with `GET https://openrouter.ai/api/v1/models`.
+# These aliases were verified against the live catalogue on 2026-06-23.
 OPENROUTER_MODELS = {
+    # OpenAI
     "gpt-4o-mini":       "openai/gpt-4o-mini",
     "gpt-4o":            "openai/gpt-4o",
     "gpt-4-turbo":       "openai/gpt-4-turbo",
     "gpt-3.5-turbo":     "openai/gpt-3.5-turbo",
-    "claude-3.5-sonnet": "anthropic/claude-3.5-sonnet",
+    # Anthropic
+    "claude-opus-4.8":   "anthropic/claude-opus-4.8",
+    "claude-sonnet-4.5": "anthropic/claude-sonnet-4.5",
+    "claude-haiku-4.5":  "anthropic/claude-haiku-4.5",
     "claude-3-haiku":    "anthropic/claude-3-haiku",
-    "llama-3.1-8b":      "meta-llama/llama-3.1-8b-instruct",
+    # Google
+    "gemini-2.5-pro":    "google/gemini-2.5-pro",
+    "gemini-2.5-flash":  "google/gemini-2.5-flash",
+    # Meta Llama
+    "llama-3.3-70b":     "meta-llama/llama-3.3-70b-instruct",
     "llama-3.1-70b":     "meta-llama/llama-3.1-70b-instruct",
-    "gemini-flash-1.5":  "google/gemini-flash-1.5",
-    "gemini-pro-1.5":    "google/gemini-pro-1.5",
-    "mistral-7b":        "mistralai/mistral-7b-instruct",
-    "mixtral-8x7b":      "mistralai/mixtral-8x7b-instruct",
+    "llama-3.1-8b":      "meta-llama/llama-3.1-8b-instruct",
+    # Mistral
+    "mixtral-8x22b":     "mistralai/mixtral-8x22b-instruct",
+    # Microsoft
+    "wizardlm-2-8x22b":  "microsoft/wizardlm-2-8x22b",
 }
 
 
@@ -80,7 +92,12 @@ class OpenRouter(LanguageModel):
     def __init__(self, model_name):
         super().__init__(model_name)
         # Resolve a friendly alias to its OpenRouter id, otherwise pass through.
-        self.api_model_id = OPENROUTER_MODELS.get(model_name, model_name)
+        api_model_id = OPENROUTER_MODELS.get(model_name, model_name)
+        # OpenRouter ids are "provider/model"; strip a stray "openrouter/"
+        # prefix so e.g. "openrouter/microsoft/wizardlm-2-8x22b" still works.
+        if api_model_id.startswith("openrouter/"):
+            api_model_id = api_model_id[len("openrouter/"):]
+        self.api_model_id = api_model_id
         self.api_key = os.getenv("OPENROUTER_API_KEY")
         if not self.api_key:
             raise ValueError(
