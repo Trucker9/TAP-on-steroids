@@ -1,18 +1,20 @@
 import re
 
-from fastchat.model import (
-    get_conversation_template
-)
+# Use the lightweight conversation module (get_conv_template takes a registered
+# template name) so we don't pull in torch via fastchat.model, which is only
+# needed for local inference.
+from fastchat.conversation import get_conv_template
 
 from system_prompts import get_evaluator_system_prompt_for_judge, get_evaluator_system_prompt_for_on_topic
 
-from language_models import GPT
+from language_models import OpenRouter, is_openrouter_model
+# from language_models import GPT  # direct OpenAI back-end disabled; using OpenRouter
 
 def load_evaluator(args):
-    if "gpt" in args.evaluator_model:
-        return GPTEvaluator(args)
-    elif args.evaluator_model == "no-evaluator":
+    if args.evaluator_model == "no-evaluator":
         return NoEvaluator(args)
+    elif is_openrouter_model(args.evaluator_model):
+        return OpenRouterEvaluator(args)
     else:
         raise NotImplementedError
 
@@ -73,16 +75,18 @@ class NoEvaluator(EvaluatorBase):
     def on_topic_score(self, attack_prompt_list, original_prompt):
         return [1 for _ in attack_prompt_list] 
 
-class GPTEvaluator(EvaluatorBase):
+class OpenRouterEvaluator(EvaluatorBase):
     def __init__(self, args):
-        super(GPTEvaluator, self).__init__(args)
-        self.evaluator_model = GPT(model_name = self.evaluator_name)
+        super(OpenRouterEvaluator, self).__init__(args)
+        self.evaluator_model = OpenRouter(model_name = self.evaluator_name)
 
     def create_conv(self, full_prompt, system_prompt=None):
         if system_prompt is None:
             system_prompt = self.system_prompt
-        
-        conv = get_conversation_template(self.evaluator_name)
+
+        # OpenRouter speaks the OpenAI chat format; use the "chatgpt" template
+        # so `to_openai_api_messages()` is available regardless of the model id.
+        conv = get_conv_template("chatgpt")
         conv.set_system_message(system_prompt)
         conv.append_message(conv.roles[0], full_prompt)
         

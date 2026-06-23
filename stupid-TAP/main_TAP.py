@@ -254,17 +254,14 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     ########### Attack model parameters ##########
+    # All models are served via OpenRouter. Pass any friendly alias from
+    # language_models.OPENROUTER_MODELS, or a raw OpenRouter id like
+    # "openai/gpt-4o-mini" (choices is intentionally left unrestricted).
     parser.add_argument(
         "--attack-model",
-        default = "vicuna",
-        help = "Name of attacking model.",
-        choices=["vicuna", 
-                 "vicuna-api-model", 
-                 "gpt-3.5-turbo", 
-                 "gpt-4", 
-                 "gpt-4-turbo", 
-                 "gpt-4-1106-preview", # This is same as gpt-4-turbo
-                 'llama-2-api-model']
+        default = "gpt-4o-mini",
+        help = "Name of attacking model (OpenRouter alias or raw id)."
+        # choices removed: any OpenRouter model id is accepted.
     )
     parser.add_argument(
         "--attack-max-n-tokens",
@@ -283,19 +280,9 @@ if __name__ == '__main__':
     ########### Target model parameters ##########
     parser.add_argument(
         "--target-model",
-        default = "vicuna",
-        help = "Name of target model.",
-        choices=["llama-2",
-                 'llama-2-api-model', 
-                 "vicuna",
-                 'vicuna-api-model', 
-                 "gpt-3.5-turbo", 
-                 "gpt-4",
-                 'gpt-4-turbo', 
-                 'gpt-4-1106-preview', # This is same as gpt-4-turbo
-                 "palm-2",
-                 "gemini-pro",
-                 ]
+        default = "gpt-4o-mini",
+        help = "Name of target model (OpenRouter alias or raw id)."
+        # choices removed: any OpenRouter model id is accepted.
     )
     parser.add_argument(
         "--target-max-n-tokens",
@@ -308,13 +295,9 @@ if __name__ == '__main__':
     ############ Evaluator model parameters ##########
     parser.add_argument(
         "--evaluator-model",
-        default="gpt-3.5-turbo",
-        help="Name of evaluator model.",
-        choices=["gpt-3.5-turbo", 
-                 "gpt-4", 
-                 "gpt-4-turbo", 
-                 "gpt-4-1106-preview", 
-                 "no-evaluator"]
+        default="gpt-4o-mini",
+        help="Name of evaluator model (OpenRouter alias/raw id, or 'no-evaluator')."
+        # choices removed: any OpenRouter model id is accepted (plus "no-evaluator").
     )
     parser.add_argument(
         "--evaluator-max-n-tokens",

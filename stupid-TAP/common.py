@@ -2,7 +2,10 @@ import ast
 import random 
 import string 
 import logging
-from fastchat.model import get_conversation_template
+# Use the lightweight conversation module (get_conv_template takes a registered
+# template name) so we don't pull in torch via fastchat.model, which is only
+# needed for local inference.
+from fastchat.conversation import get_conv_template
 
 # Metadata used to store our results
 STORE_FOLDER = '' 
@@ -52,7 +55,7 @@ def process_target_response(target_response, score, goal, target_str):
         """  
 
 def conv_template(template_name, self_id=None, parent_id=None):
-    template = get_conversation_template(template_name)
+    template = get_conv_template(template_name)
     if template.name == 'llama-2':
         template.sep2 = template.sep2.strip()
 
