@@ -69,7 +69,7 @@ It's "search a database, then paste the results into the prompt." That's it.
 
 - [x] **Step A — Feel embeddings.** Install `sentence-transformers`. Encode 5 sentences, print the
   vectors, compute cosine similarity between pairs by hand. Confirm that similar sentences score higher.
-- [ ] **Step B — ChromaDB quickstart.** Do the official ChromaDB getting-started. Store 10 short
+- [x] **Step B — ChromaDB quickstart.** Do the official ChromaDB getting-started. Store 10 short
   texts, query 3 back. ~20 minutes.
 - [ ] **Step C — Mini end-to-end RAG.** Store 10 facts, take a question, retrieve top-3, paste them
   into a prompt to an LLM, get an answer. This is the whole RAG pattern in ~40 lines.
