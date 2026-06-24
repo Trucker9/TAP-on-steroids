@@ -162,3 +162,4 @@ dmypy.json
 
 .omc
 stupid-TAP/wandb
+.DS_Store

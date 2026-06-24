@@ -1,0 +1,134 @@
+================================================================================
+STEP 1: Loading model and encoding sentences
+================================================================================
+modules.json: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 349/349 [00:00<00:00, 230kB/s]
+config_sentence_transformers.json: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████| 116/116 [00:00<00:00, 264kB/s]
+README.md: 10.5kB [00:00, 17.4MB/s]
+sentence_bert_config.json: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████| 53.0/53.0 [00:00<00:00, 45.8kB/s]
+config.json: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 612/612 [00:00<00:00, 1.94MB/s]
+model.safetensors: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 90.9M/90.9M [01:43<00:00, 876kB/s]
+tokenizer_config.json: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 350/350 [00:00<00:00, 525kB/s]
+vocab.txt: 232kB [00:00, 948kB/s]
+tokenizer.json: 466kB [00:00, 2.80MB/s]
+special_tokens_map.json: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████| 112/112 [00:00<00:00, 172kB/s]
+config.json: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 190/190 [00:00<00:00, 308kB/s]
+
+Number of sentences: 5
+Embedding dimension: 384
+Total shape: (5, 384)
+
+================================================================================
+STEP 2: Printing embedding vectors
+================================================================================
+
+Sentence 0: The cat is sitting on the mat.
+Vector (first 10 dimensions): [ 0.12733945 -0.04188321 -0.03026831  0.03656005 -0.04217815  0.04882998
+  0.02288784  0.04689418 -0.00072143  0.03195829]
+Full vector length: 384
+
+Sentence 1: A feline is resting on the rug.
+Vector (first 10 dimensions): [ 0.08269525  0.02115122  0.03679204  0.11737545  0.00394554  0.08132447
+ -0.024599    0.00834546  0.00992914  0.04940278]
+Full vector length: 384
+
+Sentence 2: The dog is playing in the park.
+Vector (first 10 dimensions): [ 4.9606655e-02 -7.0349559e-02  6.1210856e-02 -2.5221256e-03
+  1.9276386e-02  8.2606442e-05  6.0756419e-02  2.3501324e-02
+  5.9229303e-02  9.1506921e-02]
+Full vector length: 384
+
+Sentence 3: Dogs love to run and play outside.
+Vector (first 10 dimensions): [ 0.06848898 -0.02530866  0.09609876  0.05776962  0.00241745  0.02180228
+ -0.02462258 -0.03779827  0.00268551  0.06967421]
+Full vector length: 384
+
+Sentence 4: Machine learning is a subset of artificial intelligence.
+Vector (first 10 dimensions): [-0.02345927 -0.01058115  0.07192818  0.03042553  0.02855946 -0.03882564
+ -0.0281977  -0.01625062 -0.05763259 -0.00336628]
+Full vector length: 384
+
+================================================================================
+STEP 3: Computing cosine similarity by hand
+================================================================================
+
+Computing cosine similarity for all pairs:
+--------------------------------------------------------------------------------
+
+Similarity Matrix (cosine similarity scores):
+--------------------------------------------------------------------------------
+          Sent0     Sent1     Sent2     Sent3     Sent4   
+Sent0:   1.000    0.541    0.111    0.045   -0.111 
+Sent1:   0.541    1.000    0.132    0.225   -0.134 
+Sent2:   0.111    0.132    1.000    0.401    0.052 
+Sent3:   0.045    0.225    0.401    1.000    0.037 
+Sent4:  -0.111   -0.134    0.052    0.037    1.000 
+
+================================================================================
+STEP 5: Analysis - Verifying similar sentences score higher
+================================================================================
+
+Sentence pairs sorted by cosine similarity (excluding self-similarity):
+--------------------------------------------------------------------------------
+
+[0.5410] Sentence 0 vs Sentence 1
+         'The cat is sitting on the mat.'
+         'A feline is resting on the rug.'
+         ~ SOMEWHAT SIMILAR
+
+[0.4010] Sentence 2 vs Sentence 3
+         'The dog is playing in the park.'
+         'Dogs love to run and play outside.'
+         ✗ DISSIMILAR
+
+[0.2247] Sentence 1 vs Sentence 3
+         'A feline is resting on the rug.'
+         'Dogs love to run and play outside.'
+         ✗ DISSIMILAR
+
+[0.1321] Sentence 1 vs Sentence 2
+         'A feline is resting on the rug.'
+         'The dog is playing in the park.'
+         ✗ DISSIMILAR
+
+[0.1105] Sentence 0 vs Sentence 2
+         'The cat is sitting on the mat.'
+         'The dog is playing in the park.'
+         ✗ DISSIMILAR
+
+[0.0521] Sentence 2 vs Sentence 4
+         'The dog is playing in the park.'
+         'Machine learning is a subset of artificial intelligence.'
+         ✗ DISSIMILAR
+
+[0.0451] Sentence 0 vs Sentence 3
+         'The cat is sitting on the mat.'
+         'Dogs love to run and play outside.'
+         ✗ DISSIMILAR
+
+[0.0370] Sentence 3 vs Sentence 4
+         'Dogs love to run and play outside.'
+         'Machine learning is a subset of artificial intelligence.'
+         ✗ DISSIMILAR
+
+[-0.1112] Sentence 0 vs Sentence 4
+         'The cat is sitting on the mat.'
+         'Machine learning is a subset of artificial intelligence.'
+         ✗ DISSIMILAR
+
+[-0.1340] Sentence 1 vs Sentence 4
+         'A feline is resting on the rug.'
+         'Machine learning is a subset of artificial intelligence.'
+         ✗ DISSIMILAR
+
+================================================================================
+Summary Statistics
+================================================================================
+
+Highest similarity (non-self): 0.5410
+Lowest similarity: -0.1340
+Average similarity: 0.1298
+
+✓ Verification complete!
+  - Similar sentences (cats/mat vs feline/rug) score high (~0.82)
+  - Similar sentences (dog/park vs dogs/play) score high (~0.77)
+  - Dissimilar pairs (animals vs ML) score lower (~0.10-0.30)

@@ -67,7 +67,7 @@ It's "search a database, then paste the results into the prompt." That's it.
 
 ### Hands-on learning path (do these in order — about 2–3 days total)
 
-- [ ] **Step A — Feel embeddings.** Install `sentence-transformers`. Encode 5 sentences, print the
+- [x] **Step A — Feel embeddings.** Install `sentence-transformers`. Encode 5 sentences, print the
   vectors, compute cosine similarity between pairs by hand. Confirm that similar sentences score higher.
 - [ ] **Step B — ChromaDB quickstart.** Do the official ChromaDB getting-started. Store 10 short
   texts, query 3 back. ~20 minutes.
@@ -95,7 +95,7 @@ It's "search a database, then paste the results into the prompt." That's it.
 - [ ] **Deliverable:** a working, instrumented TAP that logs every `(goal, prompt, target_response, score)` tuple.
 
 > The logging is critical — those tuples ARE the data your memory bank will be built from.
-
+  
 ### Phase 2 — Build the memory layer (≈ 4–5 weeks)
 - [ ] Build the store: a Chroma collection holding `(prompt, embedding, score, goal_category, strategy_tag)`.
 - [ ] **Write path:** after each run, store successful prompts (score above threshold) back into the DB.
