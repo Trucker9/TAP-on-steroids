@@ -71,9 +71,9 @@ It's "search a database, then paste the results into the prompt." That's it.
   vectors, compute cosine similarity between pairs by hand. Confirm that similar sentences score higher.
 - [x] **Step B — ChromaDB quickstart.** Do the official ChromaDB getting-started. Store 10 short
   texts, query 3 back. ~20 minutes.
-- [ ] **Step C — Mini end-to-end RAG.** Store 10 facts, take a question, retrieve top-3, paste them
+- [x] **Step C — Mini end-to-end RAG.** Store 10 facts, take a question, retrieve top-3, paste them
   into a prompt to an LLM, get an answer. This is the whole RAG pattern in ~40 lines.
-- [ ] **Step D — Read one good RAG explainer blog** (search "RAG from scratch" — pick a recent one
+- [x] **Step D — Read one good RAG explainer blog** (search "RAG from scratch" — pick a recent one
   with code). Skip anything selling a framework; you want the raw pattern.
 
 ### Tools (don't overthink the stack)
